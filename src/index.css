@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@import "./styles/fonts.css";
+@import "./brand.css";
+
+/* Map brand CSS variables into Tailwind theme tokens so utilities like
+   bg-primary / text-accent resolve to the per-pub brand at runtime. */
+@theme {
+  --color-primary: var(--brand-primary);
+  --color-accent: var(--brand-accent);
+  --color-ink: var(--brand-ink);
+  --color-bg: var(--brand-bg);
+  --color-surface: var(--brand-surface);
+  --color-contrast: var(--brand-contrast);
+  --color-muted: var(--brand-muted);
+  --color-line: var(--brand-border);
+
+  --font-body: 'Inter', 'Inter-Fallback', system-ui, sans-serif;
+  --font-headline: 'Newsreader', 'Newsreader-Fallback', Georgia, serif;
+}
+
+/* ---------- base ---------- */
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  background-color: var(--brand-bg);
+  color: var(--brand-ink);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 { font-family: var(--font-headline); font-style: italic; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+::selection { background: var(--brand-primary); color: var(--brand-contrast); }
+:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 2px; }
+img { max-width: 100%; height: auto; }
+
+/* ---------- reusable components ---------- */
+@layer components {
+  .container-x { width: 100%; max-width: 75rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .container-x { padding-inline: 2rem; } }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--brand-primary);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
+    padding: 0.85rem 1.6rem; border-radius: 999px;
+    transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+    cursor: pointer; text-align: center; line-height: 1;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--brand-primary); color: var(--brand-contrast); box-shadow: 0 6px 20px -8px var(--brand-primary); }
+  .btn-primary:hover { box-shadow: 0 10px 28px -8px var(--brand-primary); }
+  .btn-outline { border: 1.5px solid currentColor; color: var(--brand-primary); background: transparent; }
+  .btn-ghost-light { border: 1.5px solid rgba(255,255,255,0.6); color: #fff; background: rgba(255,255,255,0.06); backdrop-filter: blur(4px); }
+  .btn-ghost-light:hover { background: rgba(255,255,255,0.16); }
+
+  .card {
+    background: var(--brand-surface);
+    border: 1px solid var(--brand-border);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .section { padding-block: clamp(3.5rem, 7vw, 6.5rem); }
+
+  .display { font-size: clamp(2.4rem, 6vw, 4.6rem); }
+  .h-section { font-size: clamp(1.9rem, 4vw, 3rem); }
+
+  .lead { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--brand-muted); }
+
+  .rule { width: 3.5rem; height: 2px; background: var(--brand-accent); border: 0; }
+
+  .link-underline { position: relative; }
+  .link-underline::after {
+    content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1.5px;
+    background: var(--brand-accent); transition: width .25s ease;
+  }
+  .link-underline:hover::after { width: 100%; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  .btn:hover { transform: none; }
+}
